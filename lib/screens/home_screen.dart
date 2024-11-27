@@ -11,12 +11,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<WaifuModel> waifuPhotos;
+  late Future<List<WaifuModel>> waifuModels;
 
   @override
   void initState() {
     super.initState();
-    waifuPhotos = ApiService.getWaifuPictures('sfw', 'waifu');
+    waifuModels = ApiService.getWaifuPictures('sfw');
   }
 
   @override
@@ -32,54 +32,77 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: Column(
+      body: FutureBuilder(
+        future: waifuModels,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 30,
+                ),
+                Expanded(
+                  child: ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return WaifuListContainer(
+                            waifuModel: snapshot.data![index]);
+                      },
+                      separatorBuilder: (context, index) => const SizedBox(
+                            height: 1,
+                          ),
+                      itemCount: snapshot.data!.length),
+                ),
+              ],
+            );
+          }
+          return const CircularProgressIndicator();
+        },
+      ),
+    );
+  }
+}
+
+class WaifuListContainer extends StatelessWidget {
+  const WaifuListContainer({
+    super.key,
+    required this.waifuModel,
+  });
+
+  final WaifuModel waifuModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 250,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
-            height: 30,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              waifuModel.category.toUpperCase(),
+              style: const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.w600,
+                color: Colors.blue,
+              ),
+            ),
           ),
-          SizedBox(
-            height: 250,
-            child: FutureBuilder(
-              future: waifuPhotos,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          snapshot.data!.category.toUpperCase(),
-                          style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView.separated(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 20),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            if (snapshot.hasData) {
-                              return PhotoContainer(
-                                  snapshot: snapshot, index: index);
-                            }
-                            return null;
-                          },
-                          separatorBuilder: (context, index) => const SizedBox(
-                            width: 15,
-                          ),
-                          itemCount: snapshot.data!.photos.length,
-                        ),
-                      ),
-                    ],
-                  );
-                }
-                return const Text('...');
+          Expanded(
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 20,
+              ),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return PhotoContainer(waifuModel: waifuModel, index: index);
               },
+              separatorBuilder: (context, index) => const SizedBox(
+                width: 15,
+              ),
+              itemCount: waifuModel.photos.length,
             ),
           ),
         ],
@@ -87,3 +110,61 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
+// class WaifuListContainer extends StatelessWidget {
+//   const WaifuListContainer({
+//     super.key,
+//     required this.waifuModel,
+//   });
+
+//   final Future<WaifuModel> waifuModel;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       height: 250,
+//       child: FutureBuilder(
+//         future: waifuModel,
+//         builder: (context, snapshot) {
+//           if (snapshot.hasData) {
+//             return Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Container(
+//                   padding: const EdgeInsets.symmetric(horizontal: 20),
+//                   child: Text(
+//                     snapshot.data!.category.toUpperCase(),
+//                     style: const TextStyle(
+//                       fontSize: 25,
+//                       fontWeight: FontWeight.w600,
+//                       color: Colors.blue,
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: ListView.separated(
+//                     padding: const EdgeInsets.symmetric(
+//                         horizontal: 10, vertical: 20),
+//                     scrollDirection: Axis.horizontal,
+//                     itemBuilder: (context, index) {
+//                       if (snapshot.hasData) {
+//                         return PhotoContainer(snapshot: snapshot, index: index);
+//                       }
+//                       return null;
+//                     },
+//                     separatorBuilder: (context, index) => const SizedBox(
+//                       width: 15,
+//                     ),
+//                     itemCount: snapshot.data!.photos.length,
+//                   ),
+//                 ),
+//               ],
+//             );
+//           }
+//           return const Text('...');
+//         },
+//       ),
+//     );
+//   }
+// }

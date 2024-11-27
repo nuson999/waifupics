@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:waifupics/models/waifu_model.dart';
 
 class PhotoContainer extends StatelessWidget {
-  final AsyncSnapshot snapshot;
+  final WaifuModel waifuModel;
   final int index;
 
   const PhotoContainer({
     super.key,
-    required this.snapshot,
+    required this.waifuModel,
     required this.index,
   });
 
@@ -24,7 +25,7 @@ class PhotoContainer extends StatelessWidget {
           ),
         ],
       ),
-      child: Image.network(snapshot.data!.photos[index]),
+      child: Image.network(waifuModel.photos[index]),
     );
   }
 }
