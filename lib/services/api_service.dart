@@ -71,7 +71,31 @@ class ApiService {
         throw Error();
       }
     }
-    print(waifuModels);
     return waifuModels;
+  }
+
+  static Future<WaifuModel> getWaifuPicture(
+      String type, String category) async {
+    final WaifuModel waifuModel;
+
+    final url = Uri.parse('$baseUrl/many/$type/$category');
+    final response = await http.post(
+      url,
+      body: {'exculde': ''},
+    );
+    if (response.statusCode == 200) {
+      final photos = jsonDecode(response.body);
+      waifuModel = WaifuModel.fromJson(
+        {
+          'type': type,
+          'category': category,
+          'photos': photos['files'],
+        },
+      );
+    } else {
+      throw Error();
+    }
+
+    return waifuModel;
   }
 }

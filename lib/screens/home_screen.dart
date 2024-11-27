@@ -11,12 +11,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<WaifuModel>> waifuModels;
+  List<Future<WaifuModel>> waifuModels = [];
 
   @override
   void initState() {
     super.initState();
-    waifuModels = ApiService.getWaifuPictures('sfw');
+    for (var category in ApiService.sfwCategories) {
+      waifuModels.add(ApiService.getWaifuPicture('sfw', category));
+    }
   }
 
   @override
@@ -32,33 +34,22 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: FutureBuilder(
-        future: waifuModels,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Expanded(
-                  child: ListView.separated(
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        return WaifuListContainer(
-                            waifuModel: snapshot.data![index]);
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(
-                            height: 1,
-                          ),
-                      itemCount: snapshot.data!.length),
-                ),
-              ],
+      body: ListView.separated(
+          itemBuilder: (context, index) {
+            return FutureBuilder(
+              future: waifuModels[index],
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return WaifuListContainer(waifuModel: snapshot.data!);
+                }
+                return Container();
+              },
             );
-          }
-          return const CircularProgressIndicator();
-        },
-      ),
+          },
+          separatorBuilder: (context, index) => const SizedBox(
+                height: 10,
+              ),
+          itemCount: waifuModels.length),
     );
   }
 }
