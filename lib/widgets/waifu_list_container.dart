@@ -13,6 +13,7 @@ class WaifuListContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('waifuModel.photos.length: ${waifuModel.photos.length}');
     return SizedBox(
       height: 250,
       child: Column(
@@ -31,12 +32,15 @@ class WaifuListContainer extends StatelessWidget {
           ),
           Expanded(
             child: ListView.separated(
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
               padding: const EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 20,
               ),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
+                print('${waifuModel.type}/${waifuModel.category}/$index');
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
