@@ -32,8 +32,6 @@ class WaifuListContainer extends StatelessWidget {
           ),
           Expanded(
             child: ListView.separated(
-              shrinkWrap: true,
-              physics: const ClampingScrollPhysics(),
               padding: const EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 20,
