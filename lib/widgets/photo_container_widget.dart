@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:waifupics/models/waifu_model.dart';
 
@@ -25,7 +26,12 @@ class PhotoContainer extends StatelessWidget {
           ),
         ],
       ),
-      child: Image.network(waifuModel.photos[index]),
+      // child: Image.network(waifuModel.photos[index]),
+      child: CachedNetworkImage(
+        imageUrl: waifuModel.photos[index],
+        placeholder: (context, url) => Container(),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+      ),
     );
   }
 }
