@@ -29,7 +29,7 @@ class DetailScreen extends StatelessWidget {
         alignment: Alignment.center,
         child: Hero(
           tag: '${waifuModel.type}/${waifuModel.category}/$index',
-          child: PhotoContainer(waifuModel: waifuModel, index: index),
+          child: PhotoContainer(imgSrc: waifuModel.photos[index]),
         ),
       ),
     );

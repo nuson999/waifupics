@@ -51,8 +51,7 @@ class WaifuListContainer extends StatelessWidget {
                   },
                   child: Hero(
                       tag: '${waifuModel.type}/${waifuModel.category}/$index',
-                      child:
-                          PhotoContainer(waifuModel: waifuModel, index: index)),
+                      child: PhotoContainer(imgSrc: waifuModel.photos[index])),
                 );
               },
               separatorBuilder: (context, index) => const SizedBox(

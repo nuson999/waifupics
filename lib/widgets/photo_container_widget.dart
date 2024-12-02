@@ -1,15 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:waifupics/models/waifu_model.dart';
 
 class PhotoContainer extends StatelessWidget {
-  final WaifuModel waifuModel;
-  final int index;
+  final String imgSrc;
 
   const PhotoContainer({
     super.key,
-    required this.waifuModel,
-    required this.index,
+    required this.imgSrc,
   });
 
   @override
@@ -28,7 +25,7 @@ class PhotoContainer extends StatelessWidget {
       ),
       // child: Image.network(waifuModel.photos[index]),
       child: CachedNetworkImage(
-        imageUrl: waifuModel.photos[index],
+        imageUrl: imgSrc,
         placeholder: (context, url) => Container(),
         errorWidget: (context, url, error) => const Icon(Icons.error),
       ),
