@@ -12,6 +12,9 @@ class PhotoContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: const BoxConstraints(
+        minWidth: 100,
+      ),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -23,7 +26,6 @@ class PhotoContainer extends StatelessWidget {
           ),
         ],
       ),
-      // child: Image.network(waifuModel.photos[index]),
       child: CachedNetworkImage(
         imageUrl: imgSrc,
         placeholder: (context, url) => Container(),

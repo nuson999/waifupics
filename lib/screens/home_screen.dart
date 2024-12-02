@@ -35,25 +35,19 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: ListView.separated(
+          padding: const EdgeInsets.symmetric(
+            vertical: 30,
+          ),
           itemBuilder: (context, index) {
             return FutureBuilder(
               future: waifuModels[index],
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  if (index == 0) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        WaifuListContainer(waifuModel: snapshot.data!)
-                      ],
-                    );
-                  } else {
-                    return WaifuListContainer(waifuModel: snapshot.data!);
-                  }
+                  return WaifuListContainer(waifuModel: snapshot.data!);
                 }
-                return Container();
+                return const SizedBox(
+                  height: 250,
+                );
               },
             );
           },
