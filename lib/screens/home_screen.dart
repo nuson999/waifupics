@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waifupics/models/waifu_model.dart';
-import 'package:waifupics/screens/detail_screen.dart';
 import 'package:waifupics/services/api_service.dart';
-import 'package:waifupics/widgets/photo_container_widget.dart';
 import 'package:waifupics/widgets/waifu_list_container.dart';
 
 class HomeScreen extends StatefulWidget {
